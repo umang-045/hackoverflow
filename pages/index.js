@@ -50,10 +50,10 @@ export default function IndexPage() {
                 {/* Basic Meta */}
                 <meta charSet="utf-8" />
                 <meta httpEquiv="x-ua-compatible" content="IE=edge" />
-                <title>HackOverflow 9.0</title>
+                <title>HackOverflow 10.0</title>
                 <meta
                     name="description"
-                    content="HackOverflow 9.0 - NIT Durgapur's official hackathon platform"
+                    content="HackOverflow 10.0 - NIT Durgapur's official hackathon platform"
                 />
                 <meta
                     name="viewport"
@@ -144,12 +144,12 @@ export default function IndexPage() {
                                                             filter: 'drop-shadow(0 0 10px #0ff)',
                                                         }}
                                                     >
-                                                        HackOverflow 9.0
+                                                        HackOverflow 10.0
                                                         <br />
-                                                        Aarohan, 2025
+                                                        Aarohan, 2026
                                                     </h3> */}
                                                     <Shuffle
-                                                        text="HackOverflow 9.0"
+                                                        text="HackOverflow 10.0"
                                                         shuffleDirection="right"
                                                         duration={1}
                                                         animationMode="evenodd"
@@ -172,7 +172,7 @@ export default function IndexPage() {
                                                     />
                                                     <br />
                                                     <Shuffle
-                                                        text="Aarohan, 2025"
+                                                        text="Aarohan, 2026"
                                                         shuffleDirection="right"
                                                         duration={1}
                                                         animationMode="evenodd"
@@ -195,7 +195,7 @@ export default function IndexPage() {
                                                     <br />
                                                     <div className="relative flex gap-4">
                                                         <a
-                                                            href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Hackoverflow+9.0&dates=20251017/20251020"
+                                                            href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Hackoverflow+10.0&dates=20261008/20251011"
                                                             style={{
                                                                 padding: '0.8rem 1.5rem',
                                                                 color: '#0ff',
@@ -227,7 +227,7 @@ export default function IndexPage() {
                                                             style={{ height: 44, width: 312, margin: '1rem 0' }}
                                                         ></div> */}
                                                         <a
-                                                            href="https://unstop.com/o/FSRT05D?lb=WeP5uM4g&utm_medium=Share&utm_source=WhatsApp"
+                                                            href="https://unstop.com/hackathons/hackoverflow-100-aarohan-nit-durgapur-1766018"
                                                             style={{
                                                                 padding: '0.8rem 1.5rem',
                                                                 color: 'rgba(255, 255, 255, 1)',
@@ -289,10 +289,10 @@ export default function IndexPage() {
                                                 marginBottom: '0.5rem'
                                             }}
                                         >
-                                            HackOverflow 9.0
+                                            HackOverflow 10.0
                                         </h3> */}
                                         <Shuffle
-                                            text="HackOverflow 9.0"
+                                            text="HackOverflow 10.0"
                                             shuffleDirection="right"
                                             duration={1}
                                             animationMode="evenodd"
@@ -336,11 +336,11 @@ export default function IndexPage() {
                                                 marginBottom: '1.5rem'
                                             }}
                                         >
-                                            Aarohan, 2025
+                                            Aarohan, 2026
                                         </h3>
                                         <div className="relative flex flex-col flex-wrap gap-4 justify-center mb-5">
                                             <a
-                                                href="https://unstop.com/o/FSRT05D?lb=WeP5uM4g&utm_medium=Share&utm_source=WhatsApp"
+                                                href="https://unstop.com/hackathons/hackoverflow-100-aarohan-nit-durgapur-1766018"
                                                 style={{
                                                     display: 'inline-block',
                                                     padding: '0.8rem 1.5rem',
@@ -374,7 +374,7 @@ export default function IndexPage() {
                                                 style={{ height: 400, width: 312, margin: '1rem 0' }}
                                             ></div> */}
                                             <a
-                                                href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Hackoverflow+9.0&dates=20251017/20251020"
+                                                href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Hackoverflow+10.0&dates=20261008/20261011"
                                                 style={{
                                                     padding: '0.8rem 1.5rem',
                                                     color: '#0ff',
@@ -451,7 +451,7 @@ export default function IndexPage() {
                                                 marginBottom: '0'
                                             }}
                                         >
-                                            17th October, 2025
+                                            9th October, 2026
                                         </p>
                                     </div>
                                 </div>
@@ -541,7 +541,7 @@ export default function IndexPage() {
                                         }}>
                                             The Biggest Technical <br />
                                             Fest of the <br />
-                                            Year 2025
+                                            Year 2026
                                         </h3>
                                     </div>
                                     <p style={{
@@ -552,7 +552,7 @@ export default function IndexPage() {
                                     }}>
                                         <br />
                                         <br />
-                                        Hackoverflow 9.0 is conducted by team
+                                        Hackoverflow 10.0 is conducted by team
                                         Aavishkar during Aarohan, the second
                                         largest techno-management of Eastern
                                         India!

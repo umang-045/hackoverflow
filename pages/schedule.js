@@ -40,10 +40,10 @@ export default function SchedulePage() {
                 {/* Basic Meta */}
                 <meta charSet="utf-8" />
                 <meta httpEquiv="x-ua-compatible" content="IE=edge" />
-                <title>HackOverflow 9.0</title>
+                <title>HackOverflow 10.0</title>
                 <meta
                     name="description"
-                    content="HackOverflow 9.0 - NIT Durgapur's official hackathon platform"
+                    content="HackOverflow 10.0 - NIT Durgapur's official hackathon platform"
                 />
                 <meta
                     name="viewport"
@@ -173,7 +173,7 @@ export default function SchedulePage() {
                                                     <br />
                                                     <div className="relative flex gap-4">
                                                         <a
-                                                            href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Hackoverflow+9.0&dates=20251017/20251020"
+                                                            href="https://calendar.google.com/calendar/u/0/r/eventedit?text=HackOverflow+10.0&dates=20261008/20261012"
                                                             style={{
                                                                 padding: '0.8rem 1.5rem',
                                                                 color: '#0ff',
@@ -198,7 +198,7 @@ export default function SchedulePage() {
                                                             Add to your Calendar
                                                         </a>
                                                         <a
-                                                            href="https://unstop.com/o/FSRT05D?lb=WeP5uM4g&utm_medium=Share&utm_source=WhatsApp"
+                                                            href="https://unstop.com/hackathons/hackoverflow-100-aarohan-nit-durgapur-1766018"
                                                             style={{
                                                                 padding: '0.8rem 1.5rem',
                                                                 color: 'rgba(255, 255, 255, 1)',
@@ -256,7 +256,7 @@ export default function SchedulePage() {
                                         </h3>
                                         <div className="relative flex flex-col flex-wrap gap-4 justify-center mb-5" style={{ width: '100%', maxWidth: '400px' }}>
                                             <a
-                                                href="https://unstop.com/o/FSRT05D?lb=WeP5uM4g&utm_medium=Share&utm_source=WhatsApp"
+                                                href="https://unstop.com/hackathons/hackoverflow-100-aarohan-nit-durgapur-1766018"
                                                 style={{
                                                     display: 'inline-block',
                                                     padding: '0.8rem 1.5rem',
@@ -291,7 +291,7 @@ export default function SchedulePage() {
                                             ></div> */}
 
                                             <a
-                                                href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Hackoverflow+9.0&dates=20251017/20251020"
+                                                href="https://calendar.google.com/calendar/u/0/r/eventedit?text=HackOverflow+10.0&dates=20261008/20261012"
                                                 style={{
                                                     display: 'inline-block',
                                                     padding: '0.8rem 1.5rem',
@@ -370,7 +370,7 @@ export default function SchedulePage() {
                                                 textShadow: '0 0 10px #ff00ff'
                                             }}
                                         >
-                                            17th October, 2025
+                                            9th October, 2026
                                         </p>
 
                                     </div>
@@ -404,7 +404,7 @@ export default function SchedulePage() {
                                             textShadow: '0 0 10px #00ffff, 0 0 20px #00ffff',
                                             fontSize: '1.5rem'
                                         }}>
-                                            11 October, 2025
+                                            8 October, 2026
                                         </h3>
                                     </div>
                                 </div>
@@ -600,7 +600,7 @@ export default function SchedulePage() {
                                             textShadow: '0 0 10px #7bb8f1ff, 0 0 20px #79c0e9ff',
                                             fontSize: '1.5rem'
                                         }}>
-                                            17 October, 2025
+                                            9 October, 2026
                                         </h3>
                                     </div>
                                 </div>
@@ -674,7 +674,7 @@ export default function SchedulePage() {
                                             textShadow: '0 0 10px #00ff88, 0 0 20px #00ff88',
                                             fontSize: '1.5rem'
                                         }}>
-                                            17 October, 2025
+                                            9 October, 2026
                                         </h3>
                                     </div>
                                 </div>
@@ -752,7 +752,7 @@ export default function SchedulePage() {
                                             textShadow: '0 0 10px #00ffff, 0 0 20px #00ffff',
                                             fontSize: '1.5rem'
                                         }}>
-                                            19 October, 2025
+                                            11 October, 2026
                                         </h3>
                                     </div>
                                 </div>
@@ -859,7 +859,7 @@ export default function SchedulePage() {
                                             textShadow: '0 0 10px #ff00ff, 0 0 20px #ff00ff',
                                             fontSize: '1.5rem'
                                         }}>
-                                            19 October, 2025
+                                            11th October, 2026
                                         </h3>
                                     </div>
                                 </div>
