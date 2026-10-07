@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 const LINKS = [
   { label: "Home", href: "/" },
   { label: "Schedule", href: "/schedule" },
-  { label: "Discord", href: "https://discord.gg/bFnT3nUe3", external: true },
+  { label: "Discord", href: "https://discord.com/invite/Y5BV2hz2T", external: true },
 ];
 
 export default function Navbar() {
