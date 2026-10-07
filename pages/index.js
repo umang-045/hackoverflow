@@ -4,22 +4,296 @@ import Head from "next/head";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Timer from "../components/Timer";
-import Sponsors from "../components/sponsors";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import BlobScene from "../components/Flow";
 import Shuffle from "../components/font/Shuffle";
+import AsciiWords from "../components/AsciiWords";
+import TechText from "../components/TechText";
+import JudgeCards from "../components/JudgeCards";
 
+const THEMES = [
+    { title: "Blockchain Technology", img: "/blockchain.png", rgb: "0, 255, 255", color: "#00ffff",
+      desc: "Keeping all important data in one place is risky. So it's better to keep important data at decentralised locations. Any web/mobile app can make use of this concept." },
+    { title: "Road Safety", img: "/road-safety.png", rgb: "255, 0, 255", color: "#ff4dff",
+      desc: "Road safety is a constant concern for public safety, particularly in developing countries. Design an effective solution that could help tackle contemporary challenges for road safety." },
+    { title: "HealthCare", img: "/healthcare.png", rgb: "0, 255, 136", color: "#00ff88",
+      desc: "The global COVID-19 pandemic has accelerated the need for digital reinvention and the adoption of better healthcare technology. High-quality health care helps prevent diseases and improve quality of life. Build solutions to increase access to health care services." },
+    { title: "Education", img: "/classroom.png", rgb: "0, 255, 255", color: "#00ffff",
+      desc: "Our education system has not updated since long but technological advancements have been rapid. Upcoming technology can help students better grasp concepts." },
+    { title: "Agriculture", img: "/agriculture.png", rgb: "255, 0, 255", color: "#ff4dff",
+      desc: "Producing and distributing food materials is a challenge with many environmental as well as government policies affecting it. Make use of technology to ease this problem." },
+    { title: "Open Innovation", img: "/open-sign.png", rgb: "0, 255, 136", color: "#00ff88",
+      desc: "Make use of developer tools to help solve any issue in society. It can be related to health, education, environment, etc. Anything that can help the society is valid." },
+];
+
+const THEMES_CSS = `
+.th-section { position: relative; padding: 90px 0 100px; background: linear-gradient(180deg, rgba(2,6,17,0.45) 0%, rgba(4,18,40,0.45) 100%); overflow: hidden; }
+.th-head { text-align: center; max-width: 720px; margin: 0 auto 48px; padding: 0 16px; }
+.th-eyebrow { display: inline-block; font-size: 0.85rem; letter-spacing: 0.3em; text-transform: uppercase; color: #00ff88; text-shadow: 0 0 8px rgba(0,255,136,0.7); margin-bottom: 14px; }
+.th-heading { margin: 0; font-weight: 800; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.1;
+  background: linear-gradient(90deg, #00ffff 0%, #7fe9ff 40%, #ff4dff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 12px rgba(0,255,255,0.35)); }
+.th-sub { margin: 16px auto 0; color: #e6eefc; font-size: 1.05rem; line-height: 1.6; }
+.th-hint { margin-top: 10px; color: #9fe9ff; font-size: 0.85rem; letter-spacing: 0.08em; opacity: .85; }
+.th-divider { width: 120px; height: 3px; margin: 22px auto 0; border-radius: 3px; background: linear-gradient(90deg, transparent, #00ffff, #ff00ff, transparent); box-shadow: 0 0 12px rgba(0,255,255,0.6); }
+
+/* Bento grid */
+.th-wrap { max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+.th-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: minmax(230px, auto); gap: 22px; }
+.th-card.th-featured { grid-column: 1 / span 2; grid-row: 1 / span 2; }
+@media (max-width: 991px) {
+  .th-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .th-card.th-featured { grid-column: 1 / -1; grid-row: auto; }
+}
+@media (max-width: 639px) {
+  .th-wrap { padding: 0 14px; }
+  .th-grid { grid-template-columns: 1fr; }
+}
+
+.th-card { position: relative; overflow: hidden; display: flex; flex-direction: column; padding: 26px 24px; border-radius: 20px; cursor: pointer; outline: none;
+  background: linear-gradient(160deg, rgba(var(--rgb), 0.14) 0%, rgba(var(--rgb), 0.03) 55%), rgba(2, 6, 17, 0.92);
+  border: 1px solid rgba(var(--rgb), 0.35);
+  transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease; }
+.th-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: .85; }
+.th-card::after { content: ""; position: absolute; width: 240px; height: 240px; right: -100px; top: -100px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--rgb), 0.28), transparent 70%); opacity: 0; transition: opacity .35s ease; pointer-events: none; }
+.th-card:hover, .th-card:focus-visible { transform: translateY(-6px); border-color: rgba(var(--rgb), 0.85); box-shadow: 0 12px 40px rgba(var(--rgb), 0.28), 0 0 18px rgba(var(--rgb), 0.25); }
+.th-card:hover::after, .th-card:focus-visible::after { opacity: 1; }
+
+.th-icon { width: 64px; height: 64px; border-radius: 50%; padding: 3px; margin-bottom: 16px; background: linear-gradient(135deg, var(--accent), rgba(var(--rgb), 0.2)); box-shadow: 0 0 20px rgba(var(--rgb), 0.55); flex-shrink: 0; transition: all .35s ease; }
+.th-icon img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; background: #0a1224; }
+.th-title { margin: 0 0 8px; font-size: 1.2rem; font-weight: 700; color: var(--accent); text-shadow: 0 0 10px rgba(var(--rgb), 0.55); }
+.th-desc { margin: 0; color: #f4f8ff; font-size: 0.95rem; line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.th-more { margin-top: auto; padding-top: 14px; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); opacity: .85; }
+.th-more::after { content: " →"; }
+
+/* Featured (large) card */
+.th-card.th-featured { justify-content: center; padding: 40px 40px; cursor: default; animation: thPop .45s ease both;
+  background: linear-gradient(145deg, rgba(var(--rgb), 0.22) 0%, rgba(var(--rgb), 0.04) 60%), rgba(2, 6, 17, 0.94);
+  border-color: rgba(var(--rgb), 0.75); box-shadow: 0 0 40px rgba(var(--rgb), 0.28), inset 0 0 40px rgba(var(--rgb), 0.06); }
+.th-card.th-featured:hover, .th-card.th-featured:focus-visible { transform: none; }
+.th-card.th-featured::after { opacity: 1; width: 380px; height: 380px; right: -140px; top: -140px; }
+.th-featured .th-icon { width: 120px; height: 120px; padding: 4px; margin-bottom: 26px; box-shadow: 0 0 34px rgba(var(--rgb), 0.7); }
+.th-featured .th-tag { display: inline-block; align-self: flex-start; margin-bottom: 14px; padding: 4px 14px; border-radius: 999px; font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(var(--rgb), 0.6); background: rgba(var(--rgb), 0.1); }
+.th-featured .th-title { font-size: clamp(1.7rem, 3vw, 2.4rem); margin-bottom: 14px; }
+.th-featured .th-desc { font-size: 1.15rem; line-height: 1.8; -webkit-line-clamp: unset; display: block; overflow: visible; max-width: 640px; }
+.th-featured .th-more { display: none; }
+@keyframes thPop { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+`;
+
+const FAQ_ITEMS = [
+    { title: "Do I need to have any specific qualifications to be a participant for the Hackathon?", body: "If you love to code, you are more than welcome to participate in the Hackathon." },
+    { title: "Do I need to pay any money to register for the Hackathon?", body: "No. You do not have to pay anything to anyone to register yourself for any Hackathon on unstop." },
+    { title: "How do I submit what I have made for the Hackathon?", body: "You have to develop the application on your local system and submit it on unstop in tar/zip file format along with instructions to run the application and source code." },
+    { title: "Do we need to have the entire idea fully working?", body: "The entire idea need not be fully implemented however, the submission should be functional so that it can be reviewed by the judges." },
+    { title: "How do we submit our hack?", body: "You have to develop the entire software application on your local system and submit it on unstop in tar/zip file format along with instructions to run the application and source code. If it is a mobile app, package it as an apk and send along with the source code." },
+    { title: "Does one have to be online and available for the entire duration of the Hackathon?", body: "No, one does not need to be logged in on Unstop or be online for the entire duration. You can develop the application on your local system based on the given themes and then submit it on Unstop, on the specific challenge page." },
+    { title: "Since there is no specific technology mentioned, are there any restrictions on using number of pre-built libraries?", body: "There is no restriction to use any language, technology stack, or libraries. You can use any of them to create the web/mobile application." },
+    { title: "Do I need to give a demo for the product that I have built?", body: "If you want you can submit a small presentation or video that demos your submission, however it's not mandatory, and only good to have. In case you are one of the winners, you might be invited to demo your application at a physical event, details of which will be shared with sufficient advance notice." },
+];
+
+
+function AccordionIcon({ isOpen, accentColor, mutedColor }) {
+    return (
+        <div style={{ position: "relative", width: 24, height: 24, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }} aria-hidden="true">
+            <svg
+                style={{
+                    position: "absolute", inset: 0, width: "100%", height: "100%",
+                    color: isOpen ? accentColor : mutedColor,
+                    transition: "transform 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55), color 300ms",
+                    transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                }}
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
+            >
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12" strokeDasharray="4 4" />
+            </svg>
+            <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", transform: isOpen ? "rotate(90deg) scale(1.1)" : "scale(1)", transition: "transform 500ms" }}>
+                <div style={{ position: "absolute", width: 12, height: 2, borderRadius: 9999, background: isOpen ? accentColor : mutedColor, transition: "background 500ms" }} />
+                <div style={{ position: "absolute", height: 12, width: 2, borderRadius: 9999, background: isOpen ? "transparent" : mutedColor, transform: isOpen ? "rotate(90deg) scale(0)" : "scale(1)", transition: "all 500ms" }} />
+            </div>
+        </div>
+    );
+}
+
+function AccordionRow({ item, idx, isOpen, onToggle, accentColor, titleSize, bodySize, titleColor, bodyColor, mutedColor, borderColor }) {
+    const [hovered, setHovered] = useState(false);
+    const contentId = `acc-content-${idx}`;
+
+    return (
+        <div
+            style={{ position: "relative", display: "flex", alignItems: "flex-start" }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+        >
+            {/* Left circular button + connector line */}
+            <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", marginTop: 2, marginRight: 16, flexShrink: 0 }}>
+                <button
+                    type="button"
+                    onClick={onToggle}
+                    aria-expanded={isOpen}
+                    aria-controls={contentId}
+                    style={{
+                        width: 48, height: 48, borderRadius: 9999,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        background: "rgba(255, 255, 255, 0.05)",
+                        border: `1px solid ${isOpen ? accentColor : borderColor}`,
+                        boxShadow: isOpen ? `0 0 20px color-mix(in srgb, ${accentColor} 25%, transparent)` : "none",
+                        transform: isOpen ? "scale(1.1)" : hovered ? "scale(1.05)" : "scale(1)",
+                        cursor: "pointer", userSelect: "none", padding: 0, outline: "none",
+                        transition: "background-color 500ms, border-color 500ms, box-shadow 500ms, transform 500ms",
+                    }}
+                >
+                    <AccordionIcon isOpen={isOpen} accentColor={accentColor} mutedColor={mutedColor} />
+                </button>
+                <div
+                    aria-hidden="true"
+                    style={{
+                        position: "absolute", top: 48, bottom: -12, width: 2,
+                        background: isOpen ? `linear-gradient(to bottom, ${accentColor}, transparent)` : "transparent",
+                        opacity: isOpen ? 1 : 0,
+                        transformOrigin: "top",
+                        transform: isOpen ? "scaleY(1)" : "scaleY(0)",
+                        transition: "all 500ms",
+                    }}
+                />
+            </div>
+
+            {/* Title + body */}
+            <div style={{ flex: 1, minWidth: 0, transform: isOpen ? "translateX(4px)" : hovered ? "translateX(2px)" : "translateX(0)", transition: "transform 500ms" }}>
+                <button
+                    type="button"
+                    onClick={onToggle}
+                    aria-expanded={isOpen}
+                    aria-controls={contentId}
+                    style={{
+                        width: "100%", textAlign: "left", padding: 16, borderRadius: 16,
+                        background: isOpen || hovered ? "linear-gradient(rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07)), rgba(2, 6, 17, 0.88)" : "linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), rgba(2, 6, 17, 0.88)",
+                        border: `1px solid ${isOpen ? `color-mix(in srgb, ${accentColor} 25%, transparent)` : borderColor}`,
+                        backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
+                        cursor: "pointer", userSelect: "none", outline: "none",
+                        position: "relative", overflow: "hidden",
+                        borderBottomLeftRadius: isOpen ? 0 : 16,
+                        borderBottomRightRadius: isOpen ? 0 : 16,
+                        transition: "background-color 500ms, border-color 500ms, border-radius 500ms",
+                    }}
+                >
+                    <div
+                        aria-hidden="true"
+                        style={{
+                            position: "absolute", inset: 0,
+                            background: `linear-gradient(to right, ${accentColor}, transparent)`,
+                            opacity: isOpen ? 0.1 : hovered ? 0.05 : 0,
+                            transition: "opacity 150ms", pointerEvents: "none",
+                        }}
+                    />
+                    <span style={{ position: "relative", zIndex: 1, fontSize: titleSize, fontWeight: 500, color: isOpen ? titleColor : mutedColor, transition: "color 300ms" }}>
+                        {item.title}
+                    </span>
+                </button>
+
+                <div
+                    id={contentId}
+                    role="region"
+                    aria-hidden={!isOpen}
+                    style={{
+                        display: "grid",
+                        gridTemplateRows: isOpen ? "1fr" : "0fr",
+                        opacity: isOpen ? 1 : 0,
+                        transition: "grid-template-rows 500ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms cubic-bezier(0.4, 0, 0.2, 1)",
+                    }}
+                >
+                    <div style={{ overflow: "hidden" }}>
+                        <div
+                            style={{
+                                position: "relative", padding: 20,
+                                border: `1px solid color-mix(in srgb, ${accentColor} 12.5%, transparent)`,
+                                borderTop: "none",
+                                borderBottomLeftRadius: 16, borderBottomRightRadius: 16,
+                                background: "linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), rgba(2, 6, 17, 0.88)",
+                                backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
+                            }}
+                        >
+                            <div
+                                aria-hidden="true"
+                                style={{
+                                    position: "absolute", top: 0, left: 0, width: "100%", height: 1,
+                                    background: `linear-gradient(to right, transparent, color-mix(in srgb, ${accentColor} 31%, transparent), transparent)`,
+                                }}
+                            />
+                            <div style={{ position: "relative", zIndex: 1, fontSize: bodySize, lineHeight: 1.55, color: bodyColor }}>
+                                {item.body}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function AnimatedAccordion({
+    items,
+    type = "single",
+    defaultOpenIndex = 0,
+    accentColor = "#8b5cf6",
+    titleSize = 14,
+    bodySize = 14,
+    titleColor = "#f5f5f5",
+    bodyColor = "rgba(245, 245, 245, 0.7)",
+    mutedColor = "rgba(245, 245, 245, 0.5)",
+    borderColor = "rgba(255, 255, 255, 0.1)",
+    rowGap = 16,
+}) {
+    const [openValues, setOpenValues] = useState(() =>
+        defaultOpenIndex < 0 || defaultOpenIndex >= items.length ? [] : [String(defaultOpenIndex)]
+    );
+
+    const toggle = (value) => {
+        setOpenValues((prev) => {
+            const isOpen = prev.includes(value);
+            if (type === "single") return isOpen ? [] : [value];
+            return isOpen ? prev.filter((v) => v !== value) : [...prev, value];
+        });
+    };
+
+    return (
+        <div style={{ position: "relative", width: "100%", fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif" }}>
+            {/* Vertical guide line behind the circles */}
+            <div
+                aria-hidden="true"
+                style={{
+                    position: "absolute", left: 23, top: 40, bottom: 40, width: 2,
+                    background: `linear-gradient(to bottom, transparent, ${borderColor}, transparent)`,
+                    pointerEvents: "none",
+                }}
+            />
+            <div style={{ display: "flex", flexDirection: "column", gap: rowGap }}>
+                {items.map((item, idx) => (
+                    <AccordionRow
+                        key={idx}
+                        item={item}
+                        idx={idx}
+                        isOpen={openValues.includes(String(idx))}
+                        onToggle={() => toggle(String(idx))}
+                        accentColor={accentColor}
+                        titleSize={titleSize}
+                        bodySize={bodySize}
+                        titleColor={titleColor}
+                        bodyColor={bodyColor}
+                        mutedColor={mutedColor}
+                        borderColor={borderColor}
+                    />
+                ))}
+            </div>
+        </div>
+    );
+}
 
 export default function IndexPage() {
 
-    const [openFAQ, setOpenFAQ] = useState(1);
-
-    const toggleFAQ = (index) => {
-        setOpenFAQ(openFAQ === index ? null : index);
-    };
-
     const [isMobile, setIsMobile] = useState(false);
+    const [activeTheme, setActiveTheme] = useState(0);
     // useEffect(() => {
     //     const script = document.createElement("script");
     //     script.src = "https://apply.devfolio.co/v2/sdk.js";
@@ -112,19 +386,48 @@ export default function IndexPage() {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
   }
+
+  .pixel-card.theme-pixel {
+    width: 100%;
+    height: auto;
+    aspect-ratio: auto;
+    display: block;
+    border: 0;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    --pixel-card-active-color: transparent;
+  }
+  .theme-pixel .pixel-canvas {
+    position: absolute;
+    inset: 0;
+  }
 `}</style>
 
                 {/* Scripts should go outside of <Head> ideally */}
             </Head>
-            <div style={{ background: '#020611' }}>
+            <style>{`
+                .page-ascii-bg {
+                    position: fixed;
+                    top: 0; left: 0;
+                    width: 100vw; height: 100vh;
+                    z-index: 0;
+                    overflow: hidden;
+                    pointer-events: none;
+                }
+                .page-ascii-bg canvas { width: 100% !important; height: 100% !important; display: block; }
+                .page-content { position: relative; z-index: 1; }
+            `}</style>
+            <div style={{ background: '#020611', position: 'relative', minHeight: '100vh' }}>
+                {/* ASCII background - fixed, covers the whole page */}
+                <div className="page-ascii-bg">
+                    <AsciiWords interactive global fontSize={isMobile ? 12 : 14} restAlpha={0.07} />
+                </div>
+                <div className="page-content">
                 <Navbar />
                 <div>
                     <div style={{ position: 'relative', minHeight: '100vh' }}>
                         {/* 3D Background */}
                         {/* <BlobScene /> */}
-                        <div className="hero-bg">
-                            <img src={isMobile ? "/hero/final2.jpg" : "/hero/final3.jpg"} alt="Background" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0, zIndex: 0, opacity: 1 }} />
-                        </div>
 
 
                         {/* Original Content with positioning */}
@@ -133,8 +436,8 @@ export default function IndexPage() {
                                 <div className="container">
                                     <div className="position_relv">
                                         <div className="row">
-                                            <div className="col-xl-9">
-                                                <div className="title_text ml-3">
+                                            <div className="col-12">
+                                                <div className="title_text" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                                                     {/* <h3
                                                         style={{
                                                             color: '#aaffff !important',
@@ -148,52 +451,14 @@ export default function IndexPage() {
                                                         <br />
                                                         Aarohan, 2026
                                                     </h3> */}
-                                                    <Shuffle
-                                                        text="HackOverflow 10.0"
-                                                        shuffleDirection="right"
-                                                        duration={1}
-                                                        animationMode="evenodd"
-                                                        shuffleTimes={1}
-                                                        ease="power3.out"
-                                                        stagger={0.03}
-                                                        threshold={0.1}
-                                                        triggerOnce={true}
-                                                        triggerOnHover={true}
-                                                        // loop={true}
-                                                        respectReducedMotion={true}
-                                                        style={{
-                                                            color: '#aaffff !important',
-                                                            fontWeight: 'bold',
-                                                            fontSize: '4rem',
-                                                            WebkitTextFillColor: '#aaffff',
-                                                            filter: 'drop-shadow(0 0 10px #0ff)',
-                                                            textTransform: 'none',
-                                                        }}
-                                                    />
+                                                    <div style={{ width: 'min(100%, 640px)', height: '110px', position: 'relative', margin: '0 auto', filter: 'drop-shadow(0 0 10px #0ff)' }}>
+                                                        <TechText text="HackOverflow 10.0" fontWeight={700} fontSize={64} color="#aaffff" accentColor="#00ffff" reveal="letter" dashLength={4} dashGap={2} specks={15} />
+                                                    </div>
+                                                    <div style={{ width: 'min(100%, 410px)', height: '110px', position: 'relative', margin: '0 auto', filter: 'drop-shadow(0 0 10px #0ff)' }}>
+                                                        <TechText text="Aarohan, 2026" fontWeight={700} fontSize={64} color="#aaffff" accentColor="#00ffff" reveal="letter" dashLength={4} dashGap={2} specks={15} />
+                                                    </div>
                                                     <br />
-                                                    <Shuffle
-                                                        text="Aarohan, 2026"
-                                                        shuffleDirection="right"
-                                                        duration={1}
-                                                        animationMode="evenodd"
-                                                        shuffleTimes={1}
-                                                        ease="power3.out"
-                                                        stagger={0.03}
-                                                        threshold={0.1}
-                                                        triggerOnce={true}
-                                                        triggerOnHover={true}
-                                                        respectReducedMotion={true}
-                                                        style={{
-                                                            color: '#aaffff !important',
-                                                            fontWeight: 'bold',
-                                                            fontSize: '4rem',
-                                                            WebkitTextFillColor: '#aaffff',
-                                                            filter: 'drop-shadow(0 0 10px #0ff)',
-                                                            textTransform: 'none',
-                                                        }}
-                                                    />
-                                                    <br />
-                                                    <div className="relative flex gap-4">
+                                                    <div className="relative flex gap-4" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                                                         <a
                                                             href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Hackoverflow+10.0&dates=20261008/20251011"
                                                             style={{
@@ -291,53 +556,12 @@ export default function IndexPage() {
                                         >
                                             HackOverflow 10.0
                                         </h3> */}
-                                        <Shuffle
-                                            text="HackOverflow 10.0"
-                                            shuffleDirection="right"
-                                            duration={1}
-                                            animationMode="evenodd"
-                                            shuffleTimes={1}
-                                            ease="power3.out"
-                                            stagger={0.03}
-                                            threshold={0.1}
-                                            triggerOnce={true}
-                                            triggerOnHover={true}
-                                            // loop={true}
-                                            respectReducedMotion={true}
-                                            style={{
-                                                color: '#aaffff',
-                                                // textShadow: `
-                                                //     0 0 5px #0ff,
-                                                //     0 0 10px #0ff,
-                                                //     0 0 20px #0ff,
-                                                //     0 0 30px #0ff
-                                                // `,
-                                                fontWeight: 'bold',
-                                                fontSize: 'clamp(2rem, 8vw, 3.5rem)',
-                                                WebkitTextFillColor: '#aaffff',
-                                                filter: 'drop-shadow(0 0 10px #0ff)',
-                                                marginBottom: '0.5rem',
-                                                textTransform: 'none'
-                                            }}
-                                        />
-                                        <h3
-                                            style={{
-                                                color: '#aaffff',
-                                                // textShadow: `
-                                                //     0 0 5px #0ff,
-                                                //     0 0 10px #0ff,
-                                                //     0 0 20px #0ff,
-                                                //     0 0 30px #0ff
-                                                // `,
-                                                fontWeight: 'bold',
-                                                fontSize: 'clamp(1.5rem, 6vw, 2.5rem)',
-                                                WebkitTextFillColor: '#aaffff',
-                                                filter: 'drop-shadow(0 0 10px #0ff)',
-                                                marginBottom: '1.5rem'
-                                            }}
-                                        >
-                                            Aarohan, 2026
-                                        </h3>
+                                        <div style={{ width: '100%', height: '80px', position: 'relative', filter: 'drop-shadow(0 0 10px #0ff)' }}>
+                                                        <TechText text="HackOverflow 10.0" fontWeight={700} fontSize={56} color="#aaffff" accentColor="#00ffff" reveal="letter" dashLength={4} dashGap={2} specks={15} />
+                                                    </div>
+                                        <div style={{ width: '100%', height: '70px', position: 'relative', filter: 'drop-shadow(0 0 10px #0ff)' }}>
+                                                        <TechText text="Aarohan, 2026" fontWeight={700} fontSize={48} color="#aaffff" accentColor="#00ffff" reveal="letter" dashLength={4} dashGap={2} specks={15} />
+                                                    </div>
                                         <div className="relative flex flex-col flex-wrap gap-4 justify-center mb-5">
                                             <a
                                                 href="https://unstop.com/hackathons/hackoverflow-100-aarohan-nit-durgapur-1766018"
@@ -508,7 +732,7 @@ export default function IndexPage() {
                     </div>
                 </div>
 
-                <div className="about_area" style={{ background: 'linear-gradient(180deg, #020611 0%, #041228 100%)', position: 'relative', overflow: 'hidden' }}>
+                <div className="about_area" style={{ background: 'linear-gradient(180deg, rgba(2,6,17,0.45) 0%, rgba(4,18,40,0.45) 100%)', position: 'relative', overflow: 'hidden' }}>
                     <div className="shape-1 d-none d-xl-block">
                         <img src="img/about/shap1.png" alt style={{ filter: 'drop-shadow(0 0 20px #00ffff)' }} />
                     </div>
@@ -581,7 +805,7 @@ export default function IndexPage() {
                     </div>
                 </div>
 
-                <div className="speakers_area" style={{ background: 'linear-gradient(180deg, #041228 0%, #020611 100%)', position: 'relative' }}>
+                <div className="speakers_area" style={{ background: 'linear-gradient(180deg, rgba(4,18,40,0.45) 0%, rgba(2,6,17,0.45) 100%)', position: 'relative' }}>
                     <h1 className="horizontal_text d-none d-lg-block neon-text" style={{
                         color: '#00ffff',
                         textShadow: '0 0 5px #00ffff, 0 0 10px #00ffff'
@@ -601,391 +825,52 @@ export default function IndexPage() {
                             </div>
                         </div>
 
-                        <div className="flex flex-col md:flex-row justify-center gap-6 items-center">
-                            <div className="flex flex-col rounded-lg items-center justify-between w-72 neon-border scanline-effect float-animation"
-                                style={{
-                                    border: '3px solid #00ffff',
-                                    background: 'linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(0, 255, 255, 0.05) 100%)',
-                                    boxShadow: '0 0 30px rgba(0, 255, 255, 0.4), inset 0 0 20px rgba(0, 255, 255, 0.1)',
-                                    transition: 'all 0.3s ease',
-                                    animationDelay: '0s'
-                                }}>
-                                <div className="rounded-lg text-white p-4 w-full text-center italic" style={{
-                                    background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-                                    borderBottom: '2px solid #00ffff'
-                                }}>
-
-                                </div>
-                                <div className="rounded-full self-start" style={{
-                                    marginTop: "-2rem", marginLeft: "1rem",
-                                    border: "4px solid #00ffff",
-                                    boxShadow: '0 0 20px rgba(0, 255, 255, 0.6)'
-                                }}>
-                                    <img
-                                        src="/vivekYadav.jpeg"
-                                        alt="Veer Pratap Singh"
-                                        className="w-20 h-20 mx-auto rounded-full dark:bg-gray-500 aspect-square border-white"
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2 justify-start" style={{ padding: "1rem" }}>
-                                    <div className="flex justify-between items-center">
-                                        <div className="text-xl neon-text" style={{
-                                            color: '#00ffff',
-                                            fontWeight: 'bold'
-                                        }}>
-                                            Vivek Yadav
-                                        </div>
-                                        <a
-                                            rel="noopener noreferrer"
-                                            href="https://www.linkedin.com/in/viveky259/overlay/about-this-profile/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BgYUnTMAHRq6eJ22PgA16vw%3D%3D"
-                                            aria-label="LinkedIn"
-                                            className="rounded-md dark:text-gray-100 hover:dark:text-violet-400"
-                                            style={{ filter: 'drop-shadow(0 0 5px #00ffff)' }}
-                                        >
-                                            <img src="/img/linkedin.svg" alt="LinkedIn" />
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs sm:text-base" style={{ color: '#b0c4de' }}>
-                                            Enterprise Solutions Architect at FlutterFlow | Google Developer Expert (Flutter & Dart) | EdTech Founder | Hackathon Judge & Mentor                                        </p>
-                                    </div>
-                                    <div>
-                                        <h6>
-                                            <span className="font-bold neon-text" style={{ color: '#00ff88' }}>500+</span> <span style={{ color: '#888' }}>Connections</span>
-                                        </h6>
-                                    </div>
-                                    <div className="flex gap-2" style={{ color: '#b0c4de' }}>
-                                        <svg className="w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#00ffff"><path d="M12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364L12 23.7279ZM16.9497 15.9497C19.6834 13.2161 19.6834 8.78392 16.9497 6.05025C14.2161 3.31658 9.78392 3.31658 7.05025 6.05025C4.31658 8.78392 4.31658 13.2161 7.05025 15.9497L12 20.8995L16.9497 15.9497ZM12 13C10.8954 13 10 12.1046 10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13Z"></path></svg>
-                                        <p>India</p>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* 
-                            <div className="flex flex-col rounded-lg items-center justify-between w-72 neon-border scanline-effect float-animation"
-                                style={{
-                                    border: '3px solid #ff00ff',
-                                    background: 'linear-gradient(135deg, rgba(255, 0, 255, 0.1) 0%, rgba(255, 0, 255, 0.05) 100%)',
-                                    boxShadow: '0 0 30px rgba(255, 0, 255, 0.4), inset 0 0 20px rgba(255, 0, 255, 0.1)',
-                                    transition: 'all 0.3s ease',
-                                    animationDelay: '0.3s'
-                                }}>
-                                <div className="rounded-lg text-white p-4 w-full text-center italic" style={{
-                                    background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-                                    borderBottom: '2px solid #ff00ff'
-                                }}>
-
-                                </div>
-                                <div className="rounded-full self-start" style={{
-                                    marginTop: "-2rem", marginLeft: "1rem",
-                                    border: "4px solid skyblue",
-                                    boxShadow: '0 0 20px rgba(142, 144, 231, 0.6)'
-                                }}>
-                                    <img
-                                        src="/img/speakers/judge2025_1.jpeg"
-                                        alt="Harshavardhan Bajoria"
-                                        className="w-20 h-20 mx-auto rounded-full dark:bg-gray-500 aspect-square border-white"
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-2 justify-start" style={{ padding: "1rem" }}>
-                                    <div className="flex justify-between items-center">
-                                        <div className="text-xl neon-text" style={{
-                                            color: 'skyblue',
-                                            fontWeight: 'bold'
-                                        }}>
-                                            Harshavardhan Bajoria
-                                        </div>
-                                        <a
-                                            rel="noopener noreferrer"
-                                            href="https://www.linkedin.com/in/harshavardhan-bajoria?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
-                                            aria-label="LinkedIn"
-                                            className="rounded-md dark:text-gray-100 hover:dark:text-violet-400"
-                                            style={{ filter: 'drop-shadow(0 0 5px #ff00ff)' }}
-                                        >
-                                            <img src="/img/linkedin.svg" alt="LinkedIn" />
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs sm:text-base" style={{ color: '#b0c4de' }}>
-                                            Associate Product Manager @Unstop; GitHub Campus Expert; Azure Developer Lead
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <h6>
-                                            <span className="font-bold neon-text" style={{ color: '#00ff88' }}>500+</span> <span style={{ color: '#888' }}>Connections</span>
-                                        </h6>
-                                    </div>
-                                    <div className="flex gap-2" style={{ color: '#b0c4de' }}>
-                                        <svg className="w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ff00ff"><path d="M12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364L12 23.7279ZM16.9497 15.9497C19.6834 13.2161 19.6834 8.78392 16.9497 6.05025C14.2161 3.31658 9.78392 3.31658 7.05025 6.05025C4.31658 8.78392 4.31658 13.2161 7.05025 15.9497L12 20.8995L16.9497 15.9497ZM12 13C10.8954 13 10 12.1046 10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13Z"></path></svg>
-                                        <p>India</p>
-                                    </div>
-                                </div>
-                            </div> */}
-
-                            {/* <h1 style={{ color: '#aaffff', textAlign: 'center', margin: '2rem 0', fontSize: '2rem', fontWeight: 'bold', padding: '1rem 0', textShadow: '0 0 2px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff, 0 0 0px #0ff' }}>To Be Announced Soon....</h1> */}
-                        </div>
+                        <JudgeCards />
                     </div>
                 </div>
 
-                <div className="event_area" style={{ background: 'linear-gradient(180deg, #020611 0%, #041228 100%)', position: 'relative' }}>
-                    <h1 className="vr_text d-none d-lg-block neon-text" style={{
-                        color: '#00ff88',
-                        textShadow: '0 0 5px #00ff88, 0 0 10px #00ff88',
-                        marginTop: '5rem'
-                    }}>Themes List</h1>
-                    <div className="container">
-                        <div className="double_line">
-                            <div className="row">
-                                <div className="col-xl-3 col-lg-3">
-                                    <div className="date">
-                                        <h3 className="neon-text" style={{
-                                            color: '#00ffff',
-                                            textShadow: '0 0 3px #00ffff, 0 0 6px #00ffff',
-                                            // marginTop: '-1.5rem'
-                                        }}>
-                                            Hackathon Themes
-                                        </h3>
-                                    </div>
-                                </div>
-                                <div className="col-xl-8 col-lg-9">
-                                    <div className="single_speaker scanline-effect" style={{
-                                        background: 'linear-gradient(135deg, rgba(0, 255, 255, 0.05) 0%, rgba(0, 255, 255, 0.02) 100%)',
-                                        border: '2px solid rgba(0, 255, 255, 0.3)',
-                                        borderRadius: '15px',
-                                        padding: '20px',
-                                        marginBottom: '25px',
-                                        boxShadow: '0 0 20px rgba(0, 255, 255, 0.2)',
-                                        transition: 'all 0.3s ease'
-                                    }}>
-                                        <img
-                                            src="/blockchain.png"
-                                            style={{
-                                                height: "90px",
-                                                width: "90px",
-                                                borderRadius: "50%",
-                                                border: '3px solid #00ffff',
-                                                // boxShadow: '0 0 20px rgba(0, 255, 255, 0.5)'
-                                            }}
-                                        />
-                                        <div className="speaker-name">
-                                            <div className="heading d-flex justify-content-between align-items-center">
-                                                <span className="neon-text" style={{
-                                                    color: '#00ffff',
-                                                    fontWeight: 'bold',
-                                                    fontSize: '1.3rem'
-                                                }}>Blockchain Technology**</span>
-                                            </div>
-                                            <p style={{ color: '#b0c4de', lineHeight: '1.7' }}>
-                                                Keeping all important data in
-                                                one place is risky. So it's
-                                                better to keep important data at
-                                                decentralised locations. Any
-                                                web/mobile app can make use of
-                                                this concept.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="single_speaker scanline-effect" style={{
-                                        background: 'linear-gradient(135deg, rgba(255, 0, 255, 0.05) 0%, rgba(255, 0, 255, 0.02) 100%)',
-                                        border: '2px solid rgba(255, 0, 255, 0.3)',
-                                        borderRadius: '15px',
-                                        padding: '20px',
-                                        marginBottom: '25px',
-                                        // boxShadow: '0 0 20px rgba(255, 0, 255, 0.2)',
-                                        transition: 'all 0.3s ease'
-                                    }}>
-                                        <img
-                                            src="/road-safety.png"
-                                            style={{
-                                                height: "90px",
-                                                width: "90px",
-                                                borderRadius: "50%",
-                                                border: '3px solid #ff00ff',
-                                                // boxShadow: '0 0 20px rgba(255, 0, 255, 0.5)'
-                                            }}
-                                        />
-                                        <div className="speaker-name">
-                                            <div className="heading d-flex justify-content-between align-items-center">
-                                                <span className="neon-text" style={{
-                                                    color: '#7fb4f1ff',
-                                                    fontWeight: 'bold',
-                                                    fontSize: '1.3rem'
-                                                }}>Road Safety</span>
-                                            </div>
-                                            <p style={{ color: '#b0c4de', lineHeight: '1.7' }}>
-                                                Road safety is a constant
-                                                concern for public safety,
-                                                particularly in developing
-                                                countries. Design an effective
-                                                solution that could help tackle
-                                                contemporary challenges for road
-                                                safety.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="single_speaker scanline-effect" style={{
-                                        background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 255, 136, 0.02) 100%)',
-                                        border: '2px solid rgba(0, 255, 136, 0.3)',
-                                        borderRadius: '15px',
-                                        padding: '20px',
-                                        marginBottom: '25px',
-                                        // boxShadow: '0 0 20px rgba(0, 255, 136, 0.2)',
-                                        transition: 'all 0.3s ease'
-                                    }}>
-                                        <img
-                                            src="/healthcare.png"
-                                            style={{
-                                                height: "90px",
-                                                width: "90px",
-                                                borderRadius: "50%",
-                                                border: '3px solid #00ff88',
-                                                // boxShadow: '0 0 20px rgba(0, 255, 136, 0.5)'
-                                            }}
-                                        />
-                                        <div className="speaker-name">
-                                            <div className="heading d-flex justify-content-between align-items-center">
-                                                <span className="neon-text" style={{
-                                                    color: '#00ff88',
-                                                    fontWeight: 'bold',
-                                                    fontSize: '1.3rem'
-                                                }}>HealthCare</span>
-                                            </div>
-                                            <p style={{ color: '#b0c4de', lineHeight: '1.7' }}>
-                                                The global COVID-19 pandemic has
-                                                accelerated the need for digital
-                                                reinvention and the adoption of
-                                                better healthcare technology.
-                                                High-quality health care helps
-                                                prevent diseases and improve
-                                                quality of life. Build solutions
-                                                to increase access to health
-                                                care services.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="single_speaker scanline-effect" style={{
-                                        background: 'linear-gradient(135deg, rgba(0, 255, 255, 0.05) 0%, rgba(0, 255, 255, 0.02) 100%)',
-                                        border: '2px solid rgba(0, 255, 255, 0.3)',
-                                        borderRadius: '15px',
-                                        padding: '20px',
-                                        marginBottom: '25px',
-                                        // boxShadow: '0 0 20px rgba(0, 255, 255, 0.2)',
-                                        transition: 'all 0.3s ease'
-                                    }}>
-                                        <img
-                                            src="/classroom.png"
-                                            style={{
-                                                height: "90px",
-                                                width: "90px",
-                                                borderRadius: "50%",
-                                                border: '3px solid #00ffff',
-                                                // boxShadow: '0 0 20px rgba(0, 255, 255, 0.5)'
-                                            }}
-                                        />
-                                        <div className="speaker-name">
-                                            <div className="heading d-flex justify-content-between align-items-center">
-                                                <span className="neon-text" style={{
-                                                    color: '#00ffff',
-                                                    fontWeight: 'bold',
-                                                    fontSize: '1.3rem'
-                                                }}>Education</span>
-                                            </div>
-                                            <p style={{ color: '#b0c4de', lineHeight: '1.7' }}>
-                                                Our education system has not
-                                                updated since long but
-                                                technological advancements have
-                                                been rapid. Upcoming technology
-                                                can help students better grasp
-                                                concepts.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="single_speaker scanline-effect" style={{
-                                        background: 'linear-gradient(135deg, rgba(255, 0, 255, 0.05) 0%, rgba(255, 0, 255, 0.02) 100%)',
-                                        border: '2px solid rgba(255, 0, 255, 0.3)',
-                                        borderRadius: '15px',
-                                        padding: '20px',
-                                        marginBottom: '25px',
-                                        // boxShadow: '0 0 20px rgba(255, 0, 255, 0.2)',
-                                        transition: 'all 0.3s ease'
-                                    }}>
-                                        <img
-                                            src="/agriculture.png"
-                                            style={{
-                                                height: "90px",
-                                                width: "90px",
-                                                borderRadius: "50%",
-                                                border: '3px solid #ff00ff',
-                                                // boxShadow: '0 0 20px rgba(255, 0, 255, 0.5)'
-                                            }}
-                                        />
-                                        <div className="speaker-name">
-                                            <div className="heading d-flex justify-content-between align-items-center">
-                                                <span className="neon-text" style={{
-                                                    color: '#ff00ff',
-                                                    fontWeight: 'bold',
-                                                    fontSize: '1.3rem'
-                                                }}>Agriculture</span>
-                                            </div>
-                                            <p style={{ color: '#b0c4de', lineHeight: '1.7' }}>
-                                                Producing and distributing food
-                                                materials is a challenge with
-                                                many environmental as well as
-                                                government policies affecting
-                                                it. Make use of technology to
-                                                ease this problem.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="single_speaker scanline-effect" style={{
-                                        background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 255, 136, 0.02) 100%)',
-                                        border: '2px solid rgba(0, 255, 136, 0.3)',
-                                        borderRadius: '15px',
-                                        padding: '20px',
-                                        marginBottom: '25px',
-                                        // boxShadow: '0 0 20px rgba(0, 255, 136, 0.2)',
-                                        transition: 'all 0.3s ease'
-                                    }}>
-                                        <img
-                                            src="/open-sign.png"
-                                            style={{
-                                                height: "90px",
-                                                width: "90px",
-                                                borderRadius: "50%",
-                                                border: '3px solid #00ff88',
-                                                // boxShadow: '0 0 20px rgba(0, 255, 136, 0.5)'
-                                            }}
-                                        />
-                                        <div className="speaker-name">
-                                            <div className="heading d-flex justify-content-between align-items-center">
-                                                <span className="neon-text" style={{
-                                                    color: '#00ff88',
-                                                    fontWeight: 'bold',
-                                                    fontSize: '1.3rem'
-                                                }}>Open Innovation</span>
-                                            </div>
-                                            <p style={{ color: '#b0c4de', lineHeight: '1.7' }}>
-                                                Make use of developer tools to
-                                                help solve any issue in society.
-                                                It can be related to health,
-                                                education, environment, etc.
-                                                Anything that can help the
-                                                society is valid.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <style>{THEMES_CSS}</style>
+                <div className="event_area th-section" style={{ position: 'relative' }}>
+                    <div className="th-wrap">
+                        <div className="th-head">
+                            <h2 className="th-heading">Hackathon Themes</h2>
+                            <p className="th-sub">Six tracks, one goal: build technology that solves real problems.</p>
+                            <p className="th-hint">Click any card to bring it into focus</p>
+                            <div className="th-divider" />
+                        </div>
+                        <div className="th-grid">
+                            {[THEMES[activeTheme], ...THEMES.filter((_, i) => i !== activeTheme)].map((t) => {
+                                const isActive = t.title === THEMES[activeTheme].title;
+                                const select = () => setActiveTheme(THEMES.findIndex((x) => x.title === t.title));
+                                return (
+                                    <article
+                                        key={t.title}
+                                        className={`th-card${isActive ? ' th-featured' : ''}`}
+                                        style={{ '--rgb': t.rgb, '--accent': t.color }}
+                                        {...(isActive
+                                            ? {}
+                                            : {
+                                                role: 'button',
+                                                tabIndex: 0,
+                                                'aria-label': `Show ${t.title} theme`,
+                                                onClick: select,
+                                                onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(); } },
+                                            })}
+                                    >
+                                        <div className="th-icon"><img src={t.img} alt="" /></div>
+                                        {isActive && <span className="th-tag">Selected theme</span>}
+                                        <h4 className="th-title">{t.title}</h4>
+                                        <p className="th-desc">{t.desc}</p>
+                                        {!isActive && <span className="th-more">View</span>}
+                                    </article>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
 
                 <div className="resister_book" style={{
-                    background: 'linear-gradient(180deg, #041228 0%, #020611 100%)',
+                    background: 'linear-gradient(180deg, rgba(4,18,40,0.45) 0%, rgba(2,6,17,0.45) 100%)',
                     position: 'relative',
                     padding: '80px 0',
                     overflow: 'hidden'
@@ -1362,7 +1247,7 @@ export default function IndexPage() {
 
                 {/* FAQ Section with Neon Theme */}
                 <div className="faq_area" style={{
-                    background: 'linear-gradient(180deg, #020611 0%, #041228 100%)',
+                    background: 'linear-gradient(180deg, rgba(2,6,17,0.45) 0%, rgba(4,18,40,0.45) 100%)',
                     position: 'relative',
                     padding: '80px 0',
                     overflow: 'hidden'
@@ -1396,479 +1281,19 @@ export default function IndexPage() {
                         </div>
                         <div className="row">
                             <div className="col-xl-12">
-                                <div>
-                                    {/* FAQ 1 */}
-                                    <div className="fade-in" style={{
-                                        background: 'linear-gradient(135deg, rgba(255, 0, 255, 0.05) 0%, rgba(255, 0, 255, 0.02) 100%)',
-                                        border: '2px solid rgba(255, 0, 255, 0.3)',
-                                        borderRadius: '15px',
-                                        marginBottom: '20px',
-                                        boxShadow: '0 0 20px rgba(255, 0, 255, 0.2)',
-                                        transition: 'all 0.3s ease',
-                                        animationDelay: '0.1s',
-                                        overflow: 'hidden'
-                                    }}>
-                                        <div style={{
-                                            background: 'transparent',
-                                            border: 'none',
-                                            padding: '20px',
-                                            cursor: 'pointer'
-                                        }}
-                                            onClick={() => toggleFAQ(1)}>
-                                            <h5 className="mb-0" style={{
-                                                color: '#ff00ff',
-                                                fontSize: '1.2rem',
-                                                fontWeight: 'bold',
-                                                textShadow: '0 0 5px rgba(255, 0, 255, 0.5)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '15px',
-                                                margin: 0
-                                            }}>
-                                                <img
-                                                    src="img/barnd/info.png"
-                                                    style={{
-                                                        height: "50px",
-                                                        width: "50px",
-                                                        borderRadius: "50%",
-                                                        filter: 'drop-shadow(0 0 10px rgba(255, 0, 255, 0.5))',
-                                                        flexShrink: 0
-                                                    }}
-                                                    alt=""
-                                                />
-                                                <span style={{ flex: 1 }}>Do I need to have any specific qualifications to be a participant for the Hackathon?</span>
-                                                <span style={{ fontSize: '1.5rem', transition: 'transform 0.3s', transform: openFAQ === 1 ? 'rotate(180deg)' : 'rotate(0)' }}>▼</span>
-                                            </h5>
-                                        </div>
-                                        <div style={{
-                                            maxHeight: openFAQ === 1 ? '500px' : '0',
-                                            overflow: 'hidden',
-                                            transition: 'max-height 0.4s ease-in-out',
-                                        }}>
-                                            <div style={{
-                                                color: '#b0c4de',
-                                                fontSize: '1.1rem',
-                                                lineHeight: '1.8',
-                                                padding: '0 20px 20px 85px'
-                                            }}>
-                                                If you love to code, you are more than welcome to participate in the Hackathon.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* FAQ 2 */}
-                                    <div className="fade-in" style={{
-                                        background: 'linear-gradient(135deg, rgba(0, 255, 255, 0.05) 0%, rgba(0, 255, 255, 0.02) 100%)',
-                                        border: '2px solid rgba(0, 255, 255, 0.3)',
-                                        borderRadius: '15px',
-                                        marginBottom: '20px',
-                                        boxShadow: '0 0 20px rgba(0, 255, 255, 0.2)',
-                                        transition: 'all 0.3s ease',
-                                        animationDelay: '0.2s',
-                                        overflow: 'hidden'
-                                    }}>
-                                        <div style={{
-                                            background: 'transparent',
-                                            border: 'none',
-                                            padding: '20px',
-                                            cursor: 'pointer'
-                                        }}
-                                            onClick={() => toggleFAQ(2)}>
-                                            <h5 className="mb-0" style={{
-                                                color: '#00ffff',
-                                                fontSize: '1.2rem',
-                                                fontWeight: 'bold',
-                                                textShadow: '0 0 5px rgba(0, 255, 255, 0.5)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '15px',
-                                                margin: 0
-                                            }}>
-                                                <img
-                                                    src="img/barnd/info.png"
-                                                    style={{
-                                                        height: "50px",
-                                                        width: "50px",
-                                                        borderRadius: "50%",
-                                                        filter: 'drop-shadow(0 0 10px rgba(0, 255, 255, 0.5))',
-                                                        flexShrink: 0
-                                                    }}
-                                                    alt=""
-                                                />
-                                                <span style={{ flex: 1 }}>Do I need to pay any money to register for the Hackathon?</span>
-                                                <span style={{ fontSize: '1.5rem', transition: 'transform 0.3s', transform: openFAQ === 2 ? 'rotate(180deg)' : 'rotate(0)' }}>▼</span>
-                                            </h5>
-                                        </div>
-                                        <div style={{
-                                            maxHeight: openFAQ === 2 ? '500px' : '0',
-                                            overflow: 'hidden',
-                                            transition: 'max-height 0.4s ease-in-out',
-                                        }}>
-                                            <div style={{
-                                                color: '#b0c4de',
-                                                fontSize: '1.1rem',
-                                                lineHeight: '1.8',
-                                                padding: '0 20px 20px 85px'
-                                            }}>
-                                                No. You do not have to pay anything to anyone to register yourself for any Hackathon on unstop.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* FAQ 3 */}
-                                    <div className="fade-in" style={{
-                                        background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 255, 136, 0.02) 100%)',
-                                        border: '2px solid rgba(0, 255, 136, 0.3)',
-                                        borderRadius: '15px',
-                                        marginBottom: '20px',
-                                        boxShadow: '0 0 20px rgba(0, 255, 136, 0.2)',
-                                        transition: 'all 0.3s ease',
-                                        animationDelay: '0.3s',
-                                        overflow: 'hidden'
-                                    }}>
-                                        <div style={{
-                                            background: 'transparent',
-                                            border: 'none',
-                                            padding: '20px',
-                                            cursor: 'pointer'
-                                        }}
-                                            onClick={() => toggleFAQ(3)}>
-                                            <h5 className="mb-0" style={{
-                                                color: '#00ff88',
-                                                fontSize: '1.2rem',
-                                                fontWeight: 'bold',
-                                                textShadow: '0 0 5px rgba(0, 255, 136, 0.5)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '15px',
-                                                margin: 0
-                                            }}>
-                                                <img
-                                                    src="img/barnd/info.png"
-                                                    style={{
-                                                        height: "50px",
-                                                        width: "50px",
-                                                        borderRadius: "50%",
-                                                        filter: 'drop-shadow(0 0 10px rgba(0, 255, 136, 0.5))',
-                                                        flexShrink: 0
-                                                    }}
-                                                    alt=""
-                                                />
-                                                <span style={{ flex: 1 }}>How do I submit what I have made for the Hackathon?</span>
-                                                <span style={{ fontSize: '1.5rem', transition: 'transform 0.3s', transform: openFAQ === 3 ? 'rotate(180deg)' : 'rotate(0)' }}>▼</span>
-                                            </h5>
-                                        </div>
-                                        <div style={{
-                                            maxHeight: openFAQ === 3 ? '500px' : '0',
-                                            overflow: 'hidden',
-                                            transition: 'max-height 0.4s ease-in-out',
-                                        }}>
-                                            <div style={{
-                                                color: '#b0c4de',
-                                                fontSize: '1.1rem',
-                                                lineHeight: '1.8',
-                                                padding: '0 20px 20px 85px'
-                                            }}>
-                                                You have to develop the application on your local system and submit it on unstop in tar/zip file format along with instructions to run the application and source code.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* FAQ 4 */}
-                                    <div className="fade-in" style={{
-                                        background: 'linear-gradient(135deg, rgba(130, 71, 229, 0.05) 0%, rgba(130, 71, 229, 0.02) 100%)',
-                                        border: '2px solid rgba(130, 71, 229, 0.3)',
-                                        borderRadius: '15px',
-                                        marginBottom: '20px',
-                                        boxShadow: '0 0 20px rgba(130, 71, 229, 0.2)',
-                                        transition: 'all 0.3s ease',
-                                        animationDelay: '0.4s',
-                                        overflow: 'hidden'
-                                    }}>
-                                        <div style={{
-                                            background: 'transparent',
-                                            border: 'none',
-                                            padding: '20px',
-                                            cursor: 'pointer'
-                                        }}
-                                            onClick={() => toggleFAQ(4)}>
-                                            <h5 className="mb-0" style={{
-                                                color: '#8247e5',
-                                                fontSize: '1.2rem',
-                                                fontWeight: 'bold',
-                                                textShadow: '0 0 5px rgba(130, 71, 229, 0.5)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '15px',
-                                                margin: 0
-                                            }}>
-                                                <img
-                                                    src="img/barnd/info.png"
-                                                    style={{
-                                                        height: "50px",
-                                                        width: "50px",
-                                                        borderRadius: "50%",
-                                                        filter: 'drop-shadow(0 0 10px rgba(130, 71, 229, 0.5))',
-                                                        flexShrink: 0
-                                                    }}
-                                                    alt=""
-                                                />
-                                                <span style={{ flex: 1 }}>Do we need to have the entire idea fully working?</span>
-                                                <span style={{ fontSize: '1.5rem', transition: 'transform 0.3s', transform: openFAQ === 4 ? 'rotate(180deg)' : 'rotate(0)' }}>▼</span>
-                                            </h5>
-                                        </div>
-                                        <div style={{
-                                            maxHeight: openFAQ === 4 ? '500px' : '0',
-                                            overflow: 'hidden',
-                                            transition: 'max-height 0.4s ease-in-out',
-                                        }}>
-                                            <div style={{
-                                                color: '#b0c4de',
-                                                fontSize: '1.1rem',
-                                                lineHeight: '1.8',
-                                                padding: '0 20px 20px 85px'
-                                            }}>
-                                                The entire idea need not be fully implemented however, the submission should be functional so that it can be reviewed by the judges.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* FAQ 5 */}
-                                    <div className="fade-in" style={{
-                                        background: 'linear-gradient(135deg, rgba(255, 0, 255, 0.05) 0%, rgba(255, 0, 255, 0.02) 100%)',
-                                        border: '2px solid rgba(255, 0, 255, 0.3)',
-                                        borderRadius: '15px',
-                                        marginBottom: '20px',
-                                        boxShadow: '0 0 20px rgba(255, 0, 255, 0.2)',
-                                        transition: 'all 0.3s ease',
-                                        animationDelay: '0.5s',
-                                        overflow: 'hidden'
-                                    }}>
-                                        <div style={{
-                                            background: 'transparent',
-                                            border: 'none',
-                                            padding: '20px',
-                                            cursor: 'pointer'
-                                        }}
-                                            onClick={() => toggleFAQ(5)}>
-                                            <h5 className="mb-0" style={{
-                                                color: '#ff00ff',
-                                                fontSize: '1.2rem',
-                                                fontWeight: 'bold',
-                                                textShadow: '0 0 5px rgba(255, 0, 255, 0.5)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '15px',
-                                                margin: 0
-                                            }}>
-                                                <img
-                                                    src="img/barnd/info.png"
-                                                    style={{
-                                                        height: "50px",
-                                                        width: "50px",
-                                                        borderRadius: "50%",
-                                                        filter: 'drop-shadow(0 0 10px rgba(255, 0, 255, 0.5))',
-                                                        flexShrink: 0
-                                                    }}
-                                                    alt=""
-                                                />
-                                                <span style={{ flex: 1 }}>How do we submit our hack?</span>
-                                                <span style={{ fontSize: '1.5rem', transition: 'transform 0.3s', transform: openFAQ === 5 ? 'rotate(180deg)' : 'rotate(0)' }}>▼</span>
-                                            </h5>
-                                        </div>
-                                        <div style={{
-                                            maxHeight: openFAQ === 5 ? '500px' : '0',
-                                            overflow: 'hidden',
-                                            transition: 'max-height 0.4s ease-in-out',
-                                        }}>
-                                            <div style={{
-                                                color: '#b0c4de',
-                                                fontSize: '1.1rem',
-                                                lineHeight: '1.8',
-                                                padding: '0 20px 20px 85px'
-                                            }}>
-                                                You have to develop the entire software application on your local system and submit it on unstop in tar/zip file format along with instructions to run the application and source code. If it is a mobile app, package it as an apk and send along with the source code.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* FAQ 6 */}
-                                    <div className="fade-in" style={{
-                                        background: 'linear-gradient(135deg, rgba(0, 255, 255, 0.05) 0%, rgba(0, 255, 255, 0.02) 100%)',
-                                        border: '2px solid rgba(0, 255, 255, 0.3)',
-                                        borderRadius: '15px',
-                                        marginBottom: '20px',
-                                        boxShadow: '0 0 20px rgba(0, 255, 255, 0.2)',
-                                        transition: 'all 0.3s ease',
-                                        animationDelay: '0.6s',
-                                        overflow: 'hidden'
-                                    }}>
-                                        <div style={{
-                                            background: 'transparent',
-                                            border: 'none',
-                                            padding: '20px',
-                                            cursor: 'pointer'
-                                        }}
-                                            onClick={() => toggleFAQ(6)}>
-                                            <h5 className="mb-0" style={{
-                                                color: '#00ffff',
-                                                fontSize: '1.2rem',
-                                                fontWeight: 'bold',
-                                                textShadow: '0 0 5px rgba(0, 255, 255, 0.5)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '15px',
-                                                margin: 0
-                                            }}>
-                                                <img
-                                                    src="img/barnd/info.png"
-                                                    style={{
-                                                        height: "50px",
-                                                        width: "50px",
-                                                        borderRadius: "50%",
-                                                        filter: 'drop-shadow(0 0 10px rgba(0, 255, 255, 0.5))',
-                                                        flexShrink: 0
-                                                    }}
-                                                    alt=""
-                                                />
-                                                <span style={{ flex: 1 }}>Does one have to be online and available for the entire duration of the Hackathon?</span>
-                                                <span style={{ fontSize: '1.5rem', transition: 'transform 0.3s', transform: openFAQ === 6 ? 'rotate(180deg)' : 'rotate(0)' }}>▼</span>
-                                            </h5>
-                                        </div>
-                                        <div style={{
-                                            maxHeight: openFAQ === 6 ? '500px' : '0',
-                                            overflow: 'hidden',
-                                            transition: 'max-height 0.4s ease-in-out',
-                                        }}>
-                                            <div style={{
-                                                color: '#b0c4de',
-                                                fontSize: '1.1rem',
-                                                lineHeight: '1.8',
-                                                padding: '0 20px 20px 85px'
-                                            }}>
-                                                No, one does not need to be logged in on Unstop or be online for the entire duration. You can develop the application on your local system based on the given themes and then submit it on Unstop, on the specific challenge page.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* FAQ 7 */}
-                                    <div className="fade-in" style={{
-                                        background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 255, 136, 0.02) 100%)',
-                                        border: '2px solid rgba(0, 255, 136, 0.3)',
-                                        borderRadius: '15px',
-                                        marginBottom: '20px',
-                                        boxShadow: '0 0 20px rgba(0, 255, 136, 0.2)',
-                                        transition: 'all 0.3s ease',
-                                        animationDelay: '0.7s',
-                                        overflow: 'hidden'
-                                    }}>
-                                        <div style={{
-                                            background: 'transparent',
-                                            border: 'none',
-                                            padding: '20px',
-                                            cursor: 'pointer'
-                                        }}
-                                            onClick={() => toggleFAQ(7)}>
-                                            <h5 className="mb-0" style={{
-                                                color: '#00ff88',
-                                                fontSize: '1.2rem',
-                                                fontWeight: 'bold',
-                                                textShadow: '0 0 5px rgba(0, 255, 136, 0.5)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '15px',
-                                                margin: 0
-                                            }}>
-                                                <img
-                                                    src="img/barnd/info.png"
-                                                    style={{
-                                                        height: "50px",
-                                                        width: "50px",
-                                                        borderRadius: "50%",
-                                                        filter: 'drop-shadow(0 0 10px rgba(0, 255, 136, 0.5))',
-                                                        flexShrink: 0
-                                                    }}
-                                                    alt=""
-                                                />
-                                                <span style={{ flex: 1 }}>Since there is no specific technology mentioned, are there any restrictions on using number of pre-built libraries?</span>
-                                                <span style={{ fontSize: '1.5rem', transition: 'transform 0.3s', transform: openFAQ === 7 ? 'rotate(180deg)' : 'rotate(0)' }}>▼</span>
-                                            </h5>
-                                        </div>
-                                        <div style={{
-                                            maxHeight: openFAQ === 7 ? '500px' : '0',
-                                            overflow: 'hidden',
-                                            transition: 'max-height 0.4s ease-in-out',
-                                        }}>
-                                            <div style={{
-                                                color: '#b0c4de',
-                                                fontSize: '1.1rem',
-                                                lineHeight: '1.8',
-                                                padding: '0 20px 20px 85px'
-                                            }}>
-                                                There is no restriction to use any language, technology stack, or libraries. You can use any of them to create the web/mobile application.
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* FAQ 8 */}
-                                    <div className="fade-in" style={{
-                                        background: 'linear-gradient(135deg, rgba(255, 69, 0, 0.05) 0%, rgba(255, 69, 0, 0.02) 100%)',
-                                        border: '2px solid rgba(255, 69, 0, 0.3)',
-                                        borderRadius: '15px',
-                                        marginBottom: '20px',
-                                        boxShadow: '0 0 20px rgba(255, 69, 0, 0.2)',
-                                        transition: 'all 0.3s ease',
-                                        animationDelay: '0.8s',
-                                        overflow: 'hidden'
-                                    }}>
-                                        <div style={{
-                                            background: 'transparent',
-                                            border: 'none',
-                                            padding: '20px',
-                                            cursor: 'pointer'
-                                        }}
-                                            onClick={() => toggleFAQ(8)}>
-                                            <h5 className="mb-0" style={{
-                                                color: '#ff4500',
-                                                fontSize: '1.2rem',
-                                                fontWeight: 'bold',
-                                                textShadow: '0 0 5px rgba(255, 69, 0, 0.5)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '15px',
-                                                margin: 0
-                                            }}>
-                                                <img
-                                                    src="img/barnd/info.png"
-                                                    style={{
-                                                        height: "50px",
-                                                        width: "50px",
-                                                        borderRadius: "50%",
-                                                        filter: 'drop-shadow(0 0 10px rgba(255, 69, 0, 0.5))',
-                                                        flexShrink: 0
-                                                    }}
-                                                    alt=""
-                                                />
-                                                <span style={{ flex: 1 }}>Do I need to give a demo for the product that I have built?</span>
-                                                <span style={{ fontSize: '1.5rem', transition: 'transform 0.3s', transform: openFAQ === 8 ? 'rotate(180deg)' : 'rotate(0)' }}>▼</span>
-                                            </h5>
-                                        </div>
-                                        <div style={{
-                                            maxHeight: openFAQ === 8 ? '500px' : '0',
-                                            overflow: 'hidden',
-                                            transition: 'max-height 0.4s ease-in-out',
-                                        }}>
-                                            <div style={{
-                                                color: '#b0c4de',
-                                                fontSize: '1.1rem',
-                                                lineHeight: '1.8',
-                                                padding: '0 20px 20px 85px'
-                                            }}>
-                                                If you want you can submit a small presentation or video that demos your submission, however it's not mandatory, and only good to have. In case you are one of the winners, you might be invited to demo your application at a physical event, details of which will be shared with sufficient advance notice.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <AnimatedAccordion
+                                    items={FAQ_ITEMS}
+                                    type="single"
+                                    defaultOpenIndex={0}
+                                    accentColor="#7799e4"
+                                    titleSize={18}
+                                    bodySize={16}
+                                    titleColor="#ffffff"
+                                    bodyColor="#f4f8ff"
+                                    mutedColor="#e6eefc"
+                                    borderColor="rgba(119, 153, 228, 0.25)"
+                                    rowGap={20}
+                                />
                             </div>
                         </div>
                     </div>
@@ -1916,6 +1341,7 @@ export default function IndexPage() {
         `}</style>
 
                 <Footer />
+                </div>
             </div>
         </>
     );
