@@ -688,7 +688,7 @@ clsx@^1.0.4:
 
 clsx@^2.1.1:
   version "2.1.1"
-  resolved "https://registry.npmjs.org/clsx/-/clsx-2.1.1.tgz"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-2.1.1.tgz#eed397c9fd8bd882bfb18deab7102049a2f32999"
   integrity sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==
 
 color-convert@^1.9.0:
@@ -912,6 +912,15 @@ fraction.js@^4.3.7:
   resolved "https://registry.npmjs.org/fraction.js/-/fraction.js-4.3.7.tgz"
   integrity sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==
 
+framer-motion@^14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-14.0.0.tgz#d8838c504e56d4982749c633c698e6d584ada181"
+  integrity sha512-QAtHmybrDFSliyW1sexMtSQTQd+1jw2ajibEmzpuI4XdPVzQkn+dAzJMm2sW3pl9MJuSS4xN51djQ7huhlP/VA==
+  dependencies:
+    motion-dom "14.0.0"
+    motion-utils "14.0.0"
+    tslib "^2.4.0"
+
 fs-extra@^10.0.0:
   version "10.1.0"
   resolved "https://registry.npmjs.org/fs-extra/-/fs-extra-10.1.0.tgz"
@@ -972,9 +981,9 @@ graceful-fs@^4.1.6, graceful-fs@^4.2.0:
   resolved "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.11.tgz"
   integrity sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==
 
-gsap@^3.13.0:
+gsap@^3.15.0:
   version "3.15.0"
-  resolved "https://registry.npmjs.org/gsap/-/gsap-3.15.0.tgz"
+  resolved "https://registry.yarnpkg.com/gsap/-/gsap-3.15.0.tgz#7851baaffc77642f2db3b1749d3634f9b5a19d14"
   integrity sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==
 
 has-flag@^3.0.0:
@@ -1265,10 +1274,10 @@ loose-envify@^1.4.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
-lucide-react@^0.545.0:
-  version "0.545.0"
-  resolved "https://registry.npmjs.org/lucide-react/-/lucide-react-0.545.0.tgz"
-  integrity sha512-7r1/yUuflQDSt4f1bpn5ZAocyIxcTyVyBBChSVtBKn5M+392cPmI5YJMWOJKk/HUWGm5wg83chlAZtCcGbEZtw==
+lucide-react@^1.52.0:
+  version "1.52.0"
+  resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-1.52.0.tgz#9945c4edc9550be7cc79808ec8a510c80512c727"
+  integrity sha512-TUgPtl5ZI9WgxOcbu4ckaC5B3l1qxPQrCMgb6OfUB9owx/OvSJfcf93SMgUWAxRw5/1XDfh9uI5F5iNGXCcGDQ==
 
 maath@^0.10.8:
   version "0.10.8"
@@ -1314,6 +1323,18 @@ modern-normalize@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/modern-normalize/-/modern-normalize-1.1.0.tgz"
   integrity sha512-2lMlY1Yc1+CUy0gw4H95uNN7vjbpoED7NNRSBHE25nWfLBdmMzFCsPshlzbxHz+gYMcBEUN8V4pU16prcdPSgA==
+
+motion-dom@14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/motion-dom/-/motion-dom-14.0.0.tgz#d99ce3f514950c2e456b8fd30483855ba9450e96"
+  integrity sha512-aU3ApXo1yTpeUi3JU+jbDk2TELjxPE3MbBMUP7nZHlARb6RweJK+ojmLjpuB0YsY6zhbBl1YWGo8LMsI1/Llqw==
+  dependencies:
+    motion-utils "14.0.0"
+
+motion-utils@14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/motion-utils/-/motion-utils-14.0.0.tgz#b6e5eacb07248f0a8ed8b1b235f9686777d419d6"
+  integrity sha512-jBsyjVxTTRZNeuvd/v+btVXr90LQkYl4HhRu9T2ARc+PMnvkmjsjRVeAg4Qm10b6TlTw+kykWI8gu/6LuvpLSQ==
 
 nanoid@^3.3.6, nanoid@^3.3.7:
   version "3.3.9"
@@ -1774,10 +1795,10 @@ suspend-react@^0.1.3:
   resolved "https://registry.npmjs.org/suspend-react/-/suspend-react-0.1.3.tgz"
   integrity sha512-aqldKgX9aZqpoDp3e8/BZ8Dm7x1pJl+qI3ZKxDN0i/IQTWUwBx/ManmlVJ3wowqbno6c2bmiIfs+Um6LbsjJyQ==
 
-tailwind-merge@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.npmjs.org/tailwind-merge/-/tailwind-merge-3.3.1.tgz"
-  integrity sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g==
+tailwind-merge@^3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-3.7.0.tgz#61e9a67ab11b64138dea7d4fa5b74a33e17f2c87"
+  integrity sha512-XPPUyAc+cvspz3lHTcR/QgPfW2A0lv/xQNIjX3HGhLR+Nq2lHaLq5MtTesHn8GUr3W3DguT2KT5x3NVgRtYwmA==
 
 tailwindcss@^2.0.3:
   version "2.2.19"
@@ -1839,10 +1860,10 @@ three@^0.170.0:
   resolved "https://registry.npmjs.org/three/-/three-0.170.0.tgz"
   integrity sha512-FQK+LEpYc0fBD+J8g6oSEyyNzjp+Q7Ks1C568WWaoMRLW+TkNNWmenWeGgJjV105Gd+p/2ql1ZcjYvNiPZBhuQ==
 
-three@^0.180.0:
-  version "0.180.0"
-  resolved "https://registry.npmjs.org/three/-/three-0.180.0.tgz"
-  integrity sha512-o+qycAMZrh+TsE01GqWUxUIKR1AL0S8pq7zDkYOQw8GqfX8b8VoCKYUoHbhiX5j+7hr8XsuHDVU6+gkQJQKg9w==
+three@^0.186.1:
+  version "0.186.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.186.1.tgz#6d50f70c2c437f844179bbb56d6f5b774e1ca38a"
+  integrity sha512-blFeqb49wRCSGUGj7gtpfnSGHy2lwDk94RhUmS1c/hTby70kvChbWpkJ4Pm1390LqzzvTmzgXKHPEafJwCb8jA==
 
 tiny-warning@^1.0.2:
   version "1.0.3"

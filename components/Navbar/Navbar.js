@@ -1,7 +1,19 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
+
+const LINKS = [
+  { label: "Home", href: "/" },
+  { label: "Schedule", href: "/schedule" },
+  { label: "Discord", href: "https://discord.gg/bFnT3nUe3", external: true },
+];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+
+  // Normalise the current path (drop query/hash handled by pathname, drop trailing slash)
+  const current = (router.pathname || "/").replace(/\/+$/, "") || "/";
+  const isActive = (href) => !href.startsWith("http") && href === current;
 
   return (
     <header className="navbar">
@@ -97,7 +109,11 @@ export default function Navbar() {
 
         .nav-links a.active {
           color: #00ffff;
-          // text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+        }
+
+        /* Underline stays on for the current page */
+        .nav-links a.active::before {
+          width: 100%;
         }
 
         /* Hamburger for mobile */
@@ -153,18 +169,19 @@ export default function Navbar() {
 
       {/* Links */}
       <ul className="nav-links">
-        <li><a href="/" className="active" onClick={() => setIsOpen(false)}>Home</a></li>
-        <li><a href="/schedule" onClick={() => setIsOpen(false)}>Schedule</a></li>
-        <li>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://discord.gg/bFnT3nUe3"
-            onClick={() => setIsOpen(false)}
-          >
-            Discord
-          </a>
-        </li>
+        {LINKS.map((l) => (
+          <li key={l.label}>
+            <a
+              href={l.href}
+              className={isActive(l.href) ? "active" : undefined}
+              aria-current={isActive(l.href) ? "page" : undefined}
+              {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              onClick={() => setIsOpen(false)}
+            >
+              {l.label}
+            </a>
+          </li>
+        ))}
       </ul>
     </header>
   );
