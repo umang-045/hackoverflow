@@ -730,7 +730,7 @@ export default function IndexPage() {
                                     <br />
                                     <br />
                                     <a
-                                        href="https://www.facebook.com/arhn.nitd/"
+                                        href="https://www.instagram.com/arhn.nitd?stkn=MTAyYWFiOHc3MTNkaA=="
                                         className="boxed-btn-red neon-border"
                                         style={{
                                             background: 'linear-gradient(135deg, #866be6ff 0%, #ff0080 100%)',
