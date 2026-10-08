@@ -210,10 +210,9 @@ export const SCHEDULE = [
         ],
     },
     {
-        date: "9 October, 2026",
+        date: "10 October, 2026",
         items: [
-            { icon: "/idea.png", title: "Application Submission Phase Ends", time: "12:00 PM" },
-            { icon: "/shuttle.png", title: "Hackoverflow flags off!", time: "12:00 PM", desc: "Ready! Set! Go!" },
+            { icon: "/idea.png", title: "Application Submission Phase Ends", time: "6:00 AM" },
         ],
     },
     {
