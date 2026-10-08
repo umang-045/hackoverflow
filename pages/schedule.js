@@ -13,13 +13,11 @@ const NEON = {
         color: '#0ff',
         border: '2px solid #0ff',
         textShadow: 'none',
-        glow: '#0ff',
     },
     apply: {
         color: 'rgba(255, 255, 255, 1)',
         border: '2px solid rgba(152, 185, 216, 1)',
-        textShadow: '0 0 5px rgba(152, 185, 216, 1)',
-        glow: '#f0f',
+        textShadow: 'none',
     },
 };
 
@@ -48,9 +46,6 @@ function NeonButton({ href, tone = "cyan", fullWidth = false, children }) {
                 backgroundColor: 'black',
                 transition: '0.3s',
                 width: fullWidth ? 'min(100%, 260px)' : 'auto',
-                boxShadow: hover
-                    ? `0 0 10px ${t.glow}, 0 0 20px ${t.glow}, 0 0 40px ${t.glow}`
-                    : `0 0 5px ${t.glow}, 0 0 10px ${t.glow}, 0 0 20px ${t.glow}`,
                 transform: hover ? 'scale(1.05)' : 'scale(1)',
             }}
         >

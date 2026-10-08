@@ -12,6 +12,51 @@ import AsciiWords from "../components/AsciiWords";
 import TechText from "../components/TechText";
 import JudgeCards from "../components/JudgeCards";
 
+const NEON = {
+    cyan: {
+        color: '#0ff',
+        border: '2px solid #0ff',
+        textShadow: 'none',
+    },
+    apply: {
+        color: 'rgba(255, 255, 255, 1)',
+        border: '2px solid rgba(152, 185, 216, 1)',
+        textShadow: 'none',
+    },
+};
+
+function NeonButton({ href, tone = "cyan", fullWidth = false, children }) {
+    const [hover, setHover] = useState(false);
+    const t = NEON[tone];
+    return (
+        <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            style={{
+                display: 'inline-block',
+                textAlign: 'center',
+                textDecoration: 'none',
+                padding: '0.8rem 1.5rem',
+                color: t.color,
+                textShadow: t.textShadow,
+                border: t.border,
+                borderRadius: '8px',
+                textTransform: 'uppercase',
+                fontWeight: 'bold',
+                backgroundColor: 'black',
+                transition: '0.3s',
+                width: fullWidth ? 'min(100%, 260px)' : 'auto',
+                transform: hover ? 'scale(1.05)' : 'scale(1)',
+            }}
+        >
+            {children}
+        </a>
+    );
+}
+
 const THEMES = [
     { title: "Blockchain Technology", img: "/blockchain.png", rgb: "0, 255, 255", color: "#00ffff",
       desc: "Keeping all important data in one place is risky. So it's better to keep important data at decentralised locations. Any web/mobile app can make use of this concept." },
@@ -459,31 +504,7 @@ export default function IndexPage() {
                                                     </div>
                                                     <br />
                                                     <div className="relative flex gap-4" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-                                                        <a
-                                                            href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Hackoverflow+10.0&dates=20261008/20251011"
-                                                            style={{
-                                                                padding: '0.8rem 1.5rem',
-                                                                color: '#0ff',
-                                                                border: '2px solid #0ff',
-                                                                borderRadius: '8px',
-                                                                textTransform: 'uppercase',
-                                                                fontWeight: 'bold',
-                                                                boxShadow: '0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff',
-                                                                transition: '0.3s',
-                                                                backgroundColor: 'black',
-                                                            }}
-                                                            onMouseEnter={(e) => {
-                                                                e.target.style.boxShadow =
-                                                                    '0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff';
-                                                                e.target.style.transform = 'scale(1.05)';
-                                                            }}
-                                                            onMouseLeave={(e) => {
-                                                                e.target.style.boxShadow = '0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff';
-                                                                e.target.style.transform = 'scale(1)';
-                                                            }}
-                                                        >
-                                                            Add to your Calendar
-                                                        </a>
+                                                        <NeonButton href="https://calendar.google.com/calendar/u/0/r/eventedit?text=HackOverflow+10.0&dates=20261008/20261012" tone="cyan">Add to your Calendar</NeonButton>
                                                         {/* 
                                                         <div
                                                             className="apply-button"
@@ -491,32 +512,7 @@ export default function IndexPage() {
                                                             data-button-theme="light"
                                                             style={{ height: 44, width: 312, margin: '1rem 0' }}
                                                         ></div> */}
-                                                        <a
-                                                            href="https://unstop.com/hackathons/hackoverflow-100-aarohan-nit-durgapur-1766018"
-                                                            style={{
-                                                                padding: '0.8rem 1.5rem',
-                                                                color: 'rgba(255, 255, 255, 1)',
-                                                                textShadow: '0 0 5px rgba(152, 185, 216, 1)',
-                                                                border: '2px solid rgba(152, 185, 216, 1)',
-                                                                borderRadius: '8px',
-                                                                textTransform: 'uppercase',
-                                                                fontWeight: 'bold',
-                                                                boxShadow: '0 0 5px #f0f, 0 0 10px #f0f, 0 0 20px #f0f',
-                                                                transition: '0.3s',
-                                                                backgroundColor: 'black',
-                                                            }}
-                                                            onMouseEnter={(e) => {
-                                                                e.target.style.boxShadow =
-                                                                    '0 0 10px #f0f, 0 0 20px #f0f, 0 0 40px #f0f';
-                                                                e.target.style.transform = 'scale(1.05)';
-                                                            }}
-                                                            onMouseLeave={(e) => {
-                                                                e.target.style.boxShadow = '0 0 5px #f0f, 0 0 10px #f0f, 0 0 20px #f0f';
-                                                                e.target.style.transform = 'scale(1)';
-                                                            }}
-                                                        >
-                                                            Apply
-                                                        </a>
+                                                        <NeonButton href="https://unstop.com/hackathons/hackoverflow-100-aarohan-nit-durgapur-1766018" tone="apply">Apply</NeonButton>
                                                         {/* 
                                                         <div
                                                             className="apply-button"
@@ -563,65 +559,14 @@ export default function IndexPage() {
                                                         <TechText text="Aarohan, 2026" fontWeight={700} fontSize={48} color="#aaffff" accentColor="#00ffff" reveal="letter" dashLength={4} dashGap={2} specks={15} />
                                                     </div>
                                         <div className="relative flex flex-col flex-wrap gap-4 justify-center mb-5">
-                                            <a
-                                                href="https://unstop.com/hackathons/hackoverflow-100-aarohan-nit-durgapur-1766018"
-                                                style={{
-                                                    display: 'inline-block',
-                                                    padding: '0.8rem 1.5rem',
-                                                    color: 'rgba(255, 255, 255, 1)',
-                                                    textShadow: '0 0 5px rgba(152, 185, 216, 1)',
-                                                    border: '2px solid #f0f',
-                                                    borderRadius: '8px',
-                                                    textTransform: 'uppercase',
-                                                    fontWeight: 'bold',
-                                                    boxShadow: '0 0 5px #f0f, 0 0 10px #f0f, 0 0 20px #f0f',
-                                                    transition: '0.3s',
-                                                    textDecoration: 'bold',
-                                                    fontSize: 'clamp(0.9rem, 3vw, 1.1rem)',
-                                                    backgroundColor: 'black',
-                                                }}
-                                                onMouseEnter={(e) => {
-                                                    e.target.style.boxShadow = '0 0 10px #f0f, 0 0 20px #f0f, 0 0 40px #f0f';
-                                                    e.target.style.transform = 'scale(1.05)';
-                                                }}
-                                                onMouseLeave={(e) => {
-                                                    e.target.style.boxShadow = '0 0 5px #f0f, 0 0 10px #f0f, 0 0 20px #f0f';
-                                                    e.target.style.transform = 'scale(1)';
-                                                }}
-                                            >
-                                                Apply
-                                            </a>
+                                            <NeonButton href="https://unstop.com/hackathons/hackoverflow-100-aarohan-nit-durgapur-1766018" tone="apply" fullWidth>Apply</NeonButton>
                                             {/* <div
                                                 className="apply-button"
                                                 data-hackathon-slug="hackoverflow09"
                                                 data-button-theme="light"
                                                 style={{ height: 400, width: 312, margin: '1rem 0' }}
                                             ></div> */}
-                                            <a
-                                                href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Hackoverflow+10.0&dates=20261008/20261011"
-                                                style={{
-                                                    padding: '0.8rem 1.5rem',
-                                                    color: '#0ff',
-                                                    border: '2px solid #0ff',
-                                                    borderRadius: '8px',
-                                                    textTransform: 'uppercase',
-                                                    fontWeight: 'bold',
-                                                    boxShadow: '0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff',
-                                                    transition: '0.3s',
-                                                    backgroundColor: 'black',
-                                                }}
-                                                onMouseEnter={(e) => {
-                                                    e.target.style.boxShadow =
-                                                        '0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff';
-                                                    e.target.style.transform = 'scale(1.05)';
-                                                }}
-                                                onMouseLeave={(e) => {
-                                                    e.target.style.boxShadow = '0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff';
-                                                    e.target.style.transform = 'scale(1)';
-                                                }}
-                                            >
-                                                Add to your Calendar
-                                            </a>
+                                            <NeonButton href="https://calendar.google.com/calendar/u/0/r/eventedit?text=HackOverflow+10.0&dates=20261008/20261012" tone="cyan" fullWidth>Add to Calendar</NeonButton>
 
 
 

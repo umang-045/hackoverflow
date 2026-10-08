@@ -15,6 +15,7 @@ const RAMP = " .:-=+*#%@";
 const DAMPING = 0.955;   // lower = ripples die out faster (was 0.985)
 const RIPPLE_SIZE = 0.7; // ripple radius in text rows (was 1.1)
 const BOLT_LIFE = 220;   // lightning duration in ms (was 380)
+const GLOW = 0.65;       // brightness of ripples + lightning (1 = original, lower = subtler)
 
 function rng(seed) {
     let a = seed >>> 0;
@@ -140,7 +141,7 @@ export default function AsciiWords({
 
         const cell = (x, y, glyph, color, alpha) => {
             ctx.clearRect(x * cw, y * ch, cw + 0.5, ch);
-            ctx.fillStyle = `rgba(${color},${alpha})`;
+            ctx.fillStyle = `rgba(${color},${alpha * GLOW})`;
             ctx.fillText(glyph, x * cw, y * ch + ch / 2);
         };
 
