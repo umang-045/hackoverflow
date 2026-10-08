@@ -212,22 +212,22 @@ export const SCHEDULE = [
     {
         date: "9 October, 2026",
         items: [
-            { icon: "/lightbulb.png", title: "Application Submission Phase Ends", time: "12:00 PM" },
+            { icon: "/idea.png", title: "Application Submission Phase Ends", time: "12:00 PM" },
             { icon: "/shuttle.png", title: "Hackoverflow flags off!", time: "12:00 PM", desc: "Ready! Set! Go!" },
         ],
     },
     {
         date: "10 October, 2026",
         items: [
-          { icon: "/shuttle.png", title: "Coding period starts", time: "06:00 AM", desc: "Ready! Set! Go!" },
+          { icon: "/idea.png", title: "Coding Submission Phase  Starts", time: "06:00 AM", desc: "Ready! Set! Go!" },
         ],
     },
     {
         date: "11 October, 2026",
         items: [
-            { icon: "/finish-line.png", title: "Coding period ends", time: "12:00 PM", desc: "Contestants stop the coding and submit their codes for further evaluation process." },
+            { icon: "/finish-line.png", title: "Coding Submission Phase  Ends", time: "12:00 PM", desc: "Contestants stop the coding and submit their codes for further evaluation process." },
             { icon: "/podium.png", title: "Judges Address", time: "2:00 PM to 5:00 PM", desc: "Few words of motivation from our knowledgeable and experienced judges!" },
-            { icon: "/lightbulb.png", title: "Evaluation Starts", time: "2:00 pm", desc: "Each of the top 15 teams will present their projects." },
+            { icon: "/idea.png", title: "Evaluation Starts", time: "2:00 pm", desc: "Each of the top 15 teams will present their projects." },
             { icon: "/podium.png", title: "Evaluation Completes", time: "4:00 pm", desc: "Teams will be evaluated by the judges." },
             { icon: "/finish-line.png", title: "Results are Published", time: "5:00 pm", desc: "Results are published based on the evaluations." },
         ],
