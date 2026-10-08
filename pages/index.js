@@ -503,7 +503,7 @@ export default function IndexPage() {
                                                         <TechText text="Aarohan, 2026" fontWeight={700} fontSize={64} color="#aaffff" accentColor="#00ffff" reveal="letter" dashLength={4} dashGap={2} specks={15} />
                                                     </div>
                                                     <br />
-                                                    <div className="relative flex gap-4" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                                                    <div className="relative flex gap-4" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '1rem', marginTop: '1.5rem' }}>
                                                         <NeonButton href="https://calendar.google.com/calendar/u/0/r/eventedit?text=HackOverflow+10.0&dates=20261008/20261012" tone="cyan">Add to your Calendar</NeonButton>
                                                         {/* 
                                                         <div
@@ -558,7 +558,7 @@ export default function IndexPage() {
                                         <div style={{ width: '100%', height: '70px', position: 'relative', filter: 'drop-shadow(0 0 10px #0ff)' }}>
                                                         <TechText text="Aarohan, 2026" fontWeight={700} fontSize={48} color="#aaffff" accentColor="#00ffff" reveal="letter" dashLength={4} dashGap={2} specks={15} />
                                                     </div>
-                                        <div className="relative flex flex-col flex-wrap gap-4 justify-center mb-5">
+                                        <div className="relative flex flex-col flex-wrap gap-4 justify-center mb-5" style={{ marginTop: '1.25rem' }}>
                                             <NeonButton href="https://unstop.com/hackathons/hackoverflow-100-aarohan-nit-durgapur-1766018" tone="apply" fullWidth>Apply</NeonButton>
                                             {/* <div
                                                 className="apply-button"
