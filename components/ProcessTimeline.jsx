@@ -206,7 +206,7 @@ export const SCHEDULE = [
     {
         date: "8 October, 2026",
         items: [
-            { icon: "/idea.png", title: "Application Submission Phase Starts", time: "8:00 PM", desc: "Period for applications starts. Participants can submit the application on Unstop." },
+            { icon: "/idea.png", title: "Application Submission Phase Starts", time: "2:00 PM", desc: "Period for applications starts. Participants can submit the application on Unstop." },
         ],
     },
     {
