@@ -735,6 +735,7 @@ export default function IndexPage() {
                                         style={{
                                             background: 'linear-gradient(135deg, #866be6ff 0%, #ff0080 100%)',
                                             border: '2px solid #a0c0e5ff',
+                                            borderRadius: '8px',
                                             boxShadow: '0 0 20px rgba(255, 0, 255, 0.5)',
                                             transition: 'all 0.3s ease',
                                             color: "white",
@@ -751,13 +752,6 @@ export default function IndexPage() {
                 </div>
 
                 <div className="speakers_area" style={{ background: 'linear-gradient(180deg, rgba(4,18,40,0.45) 0%, rgba(2,6,17,0.45) 100%)', position: 'relative' }}>
-                    <h1 className="horizontal_text d-none d-lg-block neon-text" style={{
-                        color: '#00ffff',
-                        textShadow: '0 0 5px #00ffff, 0 0 10px #00ffff'
-
-                    }}>
-                        Judge
-                    </h1>
                     <div className="container">
                         <div className="row">
                             <div className="col-xl-12">
